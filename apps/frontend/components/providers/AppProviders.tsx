@@ -25,6 +25,8 @@ import { DomainWarningBanner } from "../security/DomainWarningBanner";
 import { ConsentBanner } from "../consent/ConsentBanner";
 import { CommandPaletteProvider } from "../command-palette/CommandPaletteProvider";
 import { ChatDrawerProvider } from "../chat/public";
+import { CartProvider } from "../../hooks/useCart";
+import { CartDrawer } from "../cart/CartDrawer";
 
 // Ephemeral session signing keys live only inside this worker's isolated
 // memory. Loaded client-side only so it never runs during SSR.
@@ -71,15 +73,18 @@ export function AppProviders({ children }: { children: ReactNode }) {
                       <SessionKeyWorkerProvider>
                       <CommandPaletteProvider>
                         <ChatDrawerProvider>
-                          <DomainWarningBanner />
-                          <ConsentBanner />
-                          <DemoBanner />
-                          <SentryBreadcrumbs />
-                          <WebVitalsReporter />
-                          <QueueInspectorModal />
-                          {children}
-                          <NetworkMismatchModal />
-                          <IdleSessionGuard />
+                          <CartProvider>
+                            <DomainWarningBanner />
+                            <ConsentBanner />
+                            <DemoBanner />
+                            <SentryBreadcrumbs />
+                            <WebVitalsReporter />
+                            <QueueInspectorModal />
+                            {children}
+                            <CartDrawer />
+                            <NetworkMismatchModal />
+                            <IdleSessionGuard />
+                          </CartProvider>
                         </ChatDrawerProvider>
                       </CommandPaletteProvider>
                       </SessionKeyWorkerProvider>
