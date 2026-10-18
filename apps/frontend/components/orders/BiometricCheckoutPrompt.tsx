@@ -282,7 +282,7 @@ export function BiometricCheckoutPrompt({
               <div className="flex gap-2">
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="ghost"
                   onClick={onCancel}
                   data-testid="biometric-checkout-cancel"
                 >
