@@ -62,5 +62,6 @@ apps/frontend/.bundle-size-baseline.json
 apps/frontend/mocks/fixtures/demo-world.json
 .npmrc
 
+# Change log (internal, not for review)
 # Local changelog
 CHANGES.md

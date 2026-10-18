@@ -49,11 +49,10 @@ export default function WalletPage() {
   );
 
   const nativeBalance = balanceState.balances.find(
-    (b) => b.asset_type === "native"
+    (b) => b?.asset_type === "native"
   );
-  const nativeBalanceNum = nativeBalance
-    ? parseFloat(nativeBalance.balance)
-    : 0;
+  const nativeBalanceNum =
+    nativeBalance?.balance ? parseFloat(nativeBalance.balance) : 0;
 
   // -------------------------------------------------------------------------
   // Friendbot
