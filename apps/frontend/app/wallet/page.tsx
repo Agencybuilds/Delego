@@ -14,6 +14,7 @@ import { FeeTierField } from "../../components/wallet/FeeTierField";
 import { BalanceSparkline } from "../../components/wallet/BalanceSparkline";
 import { AssetBreakdownTable } from "../../components/wallet/AssetBreakdownTable";
 import { CopyButton } from "../../components/wallet/CopyButton";
+import { HydrationStableBalance } from "../../components/HydrationStableBalance";
 import {
   useDemoModeGuard,
   DEMO_MODE_BLOCKED_MESSAGE,
@@ -145,10 +146,11 @@ export default function WalletPage() {
                 <div className="wallet-detail-row">
                   <dt>Current XLM Balance</dt>
                   <dd>
-                    {nativeBalanceNum.toLocaleString(undefined, {
-                      maximumFractionDigits: 7,
-                    })}{" "}
-                    XLM
+                    <HydrationStableBalance
+                      stroopAmount={BigInt(
+                        Math.round(nativeBalanceNum * 10_000_000)
+                      )}
+                    />
                   </dd>
                 </div>
               )}
