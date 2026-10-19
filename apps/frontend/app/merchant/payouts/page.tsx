@@ -3,6 +3,7 @@
 import { Card } from "@delegolabs/ui";
 import { CopyButton } from "../../../components/wallet/CopyButton";
 import { LowStockBanner } from "../../../components/merchant/InventoryAlerts";
+import { RevenueAreaChart } from "../../../components/merchant/RevenueAreaChart";
 import { useMerchantCatalog } from "../../../hooks/useMerchantCatalog";
 import { useMerchantPayouts } from "../../../hooks/useMerchantPayouts";
 import { useMerchantEscrowOrders } from "../../../hooks/useMerchantEscrowOrders";
@@ -51,6 +52,8 @@ export default function MerchantPayoutsPage() {
           </p>
         </Card>
       </div>
+
+      <RevenueAreaChart payouts={payouts} />
 
       {error && (
         <div role="alert" style={{ color: "#dc2626", fontSize: "0.8125rem" }}>
