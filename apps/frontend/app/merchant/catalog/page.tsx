@@ -1,13 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMerchantCatalog } from "../../../hooks/useMerchantCatalog";
 import { useCatalogFilters } from "../../../hooks/useCatalogFilters";
+import {
+  InventoryThresholdField,
+  LowStockBadge,
+} from "../../../components/merchant/InventoryAlerts";
 import {
   applyFilters,
   extractCategories,
   hasActiveFilters,
 } from "../../../lib/catalogFilters";
+import {
+  DEFAULT_LOW_STOCK_THRESHOLD,
+  readLowStockThreshold,
+  subscribeLowStockThreshold,
+} from "../../../lib/inventoryStock";
 import { CATALOG_PAGE_SIZE, priceDisplay } from "../../../lib/merchantCatalog";
 import {
   CatalogFilterSidebar,
@@ -20,6 +29,12 @@ export default function MerchantCatalogPage() {
 
   const { products, total, loading, error, toggleListed } = useMerchantCatalog(page);
   const { filters, setFilters, resetFilters, hydrated } = useCatalogFilters();
+  const [threshold, setThreshold] = useState(DEFAULT_LOW_STOCK_THRESHOLD);
+
+  useEffect(() => {
+    setThreshold(readLowStockThreshold());
+    return subscribeLowStockThreshold(setThreshold);
+  }, []);
 
   // Extract categories from the full (unfiltered) list so category options
   // remain stable while filters are active.
@@ -75,6 +90,8 @@ export default function MerchantCatalogPage() {
           )}
         </button>
       </div>
+
+      <InventoryThresholdField />
 
       {error && (
         <div role="alert" style={{ color: "#dc2626", fontSize: "0.8125rem" }}>
@@ -136,6 +153,7 @@ export default function MerchantCatalogPage() {
                   <span style={{ fontSize: "0.75rem", color: "#6b7280" }}>
                     Stock: {product.stockQuantity}
                   </span>
+                  <LowStockBadge stockQuantity={product.stockQuantity} threshold={threshold} />
                   {product.rating !== undefined && (
                     <span style={{ fontSize: "0.75rem", color: "#6b7280" }}>
                       Rating: {product.rating.toFixed(1)}★
