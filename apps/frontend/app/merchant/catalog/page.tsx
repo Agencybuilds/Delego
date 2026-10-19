@@ -13,12 +13,16 @@ import {
   CatalogFilterSidebar,
   MobileCatalogFilterDrawer,
 } from "../../../components/filters/CatalogFilterSidebar";
+import { CatalogCsvImporter } from "../../../components/merchant/CatalogCsvImporter";
+import { importMerchantCatalog } from "../../../lib/merchantRegistration";
+import type { CatalogImportRow } from "../../../lib/catalogCsv";
+import type { CsvImportRow } from "../../../lib/csvCatalogImport";
 
 export default function MerchantCatalogPage() {
   const [page, setPage] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { products, total, loading, error, toggleListed } = useMerchantCatalog(page);
+  const { products, total, loading, error, toggleListed, refresh } = useMerchantCatalog(page);
   const { filters, setFilters, resetFilters, hydrated } = useCatalogFilters();
 
   // Extract categories from the full (unfiltered) list so category options
@@ -75,6 +79,22 @@ export default function MerchantCatalogPage() {
           )}
         </button>
       </div>
+
+      <CatalogCsvImporter
+        onImport={async (rows) => {
+          const payload: CatalogImportRow[] = rows.map((row: CsvImportRow) => ({
+            sku: row.sku.trim(),
+            title: row.title.trim(),
+            priceStroops: row.priceStroops.trim(),
+            assetCode: "USDC",
+            stockQuantity: row.stock,
+          }));
+          await importMerchantCatalog(payload);
+        }}
+        onImported={() => {
+          void refresh();
+        }}
+      />
 
       {error && (
         <div role="alert" style={{ color: "#dc2626", fontSize: "0.8125rem" }}>
