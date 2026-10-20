@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { NetworkProvider, useNetwork } from "./useNetwork";
